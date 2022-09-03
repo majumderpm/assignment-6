@@ -37,7 +37,44 @@ const newsLoad = async() =>{
 
 }
 
+//  show all news 
 
+const getDetails = async(id) => {
+    const displayNews =  document.getElementById('news_card');
+    const data = await newsDetails(id);
+    displayNews.innerHTML = '';
+ 
+ 
+ 
+ 
+    data.data.forEach(news => {
+     console.log(news)
+     const newsDiv = document.createElement('div');
+     newsDiv.classList.add('row');
+     newsDiv.innerHTML =  `
+         <div  class="col-md-4">
+         <img src="${news.image_url}" class="img-fluid rounded-start" alt="...">
+     </div>
+     <div class="col-md-8">
+         <div class="card-body">
+         <h5 class="card-title">${news.title}</h5>
+         <p class="card-text">${news.details.slice(0, 250)}...</p>
+         <div class="card-text">
+         <img src="${news.author.img}" class="img-fluid rounded-start author_img " alt="..." >
+         <small class="text-muted">${news.author.name}</small>
+         <p class="views">${news.total_view}</p>
+         </div>
+         <button class="btn btn-primary" onclick="details_btn('${news.id}')" data-bs-toggle="modal" data-bs-target="#exampleModal">View More</button>
+         </div>
+     </div>
+     `;
+     displayNews.appendChild(newsDiv);
+ });
+ 
+ 
+ 
+ 
+ }
 
         setAllNews ();
 
