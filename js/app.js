@@ -65,11 +65,14 @@ const getDetails = async(id) => {
          <h5 class="card-title">${news.title}</h5>
          <p class="card-text">${news.details.slice(0, 250)}...</p>
          <div class="card-text">
-         <img src="${news.author.img}" class="img-fluid rounded-start author_img " alt="..." >
-         <small class="text-muted">${news.author.name}</small>
+        <div>
+        <img src="${news.author.img}" class="img-fluid rounded-start author_img " alt="..." >
+        <small class="text-muted">${news.author.name}</small>
+        </div>
          <p class="views">${news.total_view}</p>
+         <button class="btn btn-primary" onclick="loadDtials('${news._id}')" data-bs-toggle="modal" data-bs-target="#exampleModal">View More</button>
          </div>
-         <button class="btn btn-primary" onclick="details_btn('${news.id}')" data-bs-toggle="modal" data-bs-target="#exampleModal">View More</button>
+         
          </div>
      </div>
      `;
@@ -83,33 +86,37 @@ const getDetails = async(id) => {
 
  const loadDtials = id => {
     const url = `https://openapi.programming-hero.com/api/news/${id}`;
-
+console.log(id, url)
     fetch(url)
     .then(res => res.json())
-    .then(data => displayNewsDetalis(data.data));
+    .then(data => displayNewsDetalis(data));
+    // .then(data => console.log((data));
 }
 
 //  display phone detalis 
 
 const displayNewsDetalis = news => {
-    console.log(news);
+    console.log(news.data);
     const modalTitel = document.getElementById('exampleModalLabel');
-    modalTitel.innerText = news.title;
+    modalTitel.innerText = news.data[0].title;
 
     const newsDetailsadd = document.getElementById('newsview_details');
     const newsDetailsDiv = document.createElement('div');
     newsDetailsadd.innerHTML = `
 
-    <img src="${news.image_url}" class="img-fluid rounded-start" alt="...">
-    <p>Release Date: ${news.title ? news.releaseDate : 'Not Found' }</p>
-    <p>mainFeatures: ${news.mainFeatures ? news.mainFeatures.storage : 'No Data'  }</p>
-
+    <img src="${news.data[0].image_url}" class="img-fluid rounded-start" alt="...">
+   
+    <div>
+    <img src="${news.data[0].author.img}" class="img-fluid rounded-start author_img " alt="..." >
+    <small class="text-muted">${news.data[0].author ? news.data[0].author.name : 'Not Found'}</small>
+    </div>
+     <p class="views">${news.data[0].total_view}</p>
 
     `;
 
-    modalTitel.appendChild(newsDetailsDiv);
+    // modalTitel.appendChild(newsDetailsDiv);
 }
-
+    loadDtials();
 -        setAllNews ();
 
 // newsLoad();
