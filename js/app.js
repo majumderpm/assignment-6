@@ -5,6 +5,9 @@ const newsLoad = async() =>{
      const data = await res.json();
     return data;
     }
+
+    // show all news 
+
     const newsDetails = async(id) =>{
         //  const url = `https://openapi.programming-hero.com/api/phones?search=iphone`;  
          const res = await fetch(`https://openapi.programming-hero.com/api/news/category/${id}`);
@@ -12,6 +15,8 @@ const newsLoad = async() =>{
          const data = await res.json();
         return data;
         }
+
+
 
     const setAllNews = async() =>{
         const data = await newsLoad();
@@ -71,12 +76,41 @@ const getDetails = async(id) => {
      displayNews.appendChild(newsDiv);
  });
  
- 
- 
- 
+
  }
 
-        setAllNews ();
+
+
+ const loadDtials = id => {
+    const url = `https://openapi.programming-hero.com/api/news/${id}`;
+
+    fetch(url)
+    .then(res => res.json())
+    .then(data => displayNewsDetalis(data.data));
+}
+
+//  display phone detalis 
+
+const displayNewsDetalis = news => {
+    console.log(news);
+    const modalTitel = document.getElementById('exampleModalLabel');
+    modalTitel.innerText = news.title;
+
+    const newsDetailsadd = document.getElementById('newsview_details');
+    const newsDetailsDiv = document.createElement('div');
+    newsDetailsadd.innerHTML = `
+
+    <img src="${news.image_url}" class="img-fluid rounded-start" alt="...">
+    <p>Release Date: ${news.title ? news.releaseDate : 'Not Found' }</p>
+    <p>mainFeatures: ${news.mainFeatures ? news.mainFeatures.storage : 'No Data'  }</p>
+
+
+    `;
+
+    modalTitel.appendChild(newsDetailsDiv);
+}
+
+-        setAllNews ();
 
 // newsLoad();
 
