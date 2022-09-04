@@ -1,18 +1,23 @@
 
 const newsLoad = async() =>{
     //  const url = `https://openapi.programming-hero.com/api/phones?search=iphone`;  
+    toggleSpinner(true);
      const res = await fetch("https://openapi.programming-hero.com/api/news/categories");
      const data = await res.json();
+     toggleSpinner(false);
     return data;
     }
 
     // show all news 
 
     const newsDetails = async(id) =>{
-        //  const url = `https://openapi.programming-hero.com/api/phones?search=iphone`;  
-         const res = await fetch(`https://openapi.programming-hero.com/api/news/category/${id}`);
-         console.log(id, )
+        toggleSpinner(true);
+         const url = `https://openapi.programming-hero.com/api/news/category/${id}`;  
+         const res = await fetch(url);
+    
          const data = await res.json();
+         toggleSpinner(false);
+         console.log(data)
         return data;
         }
 
@@ -30,11 +35,13 @@ const newsLoad = async() =>{
             for(const news of allData)
                 {
                     // console.log(news)
-                console.log(news.category_name);
+                // console.log(news);
                 const li = document.createElement('li');
                 li.classList.add('col');
+                // li.classList.add('itemsList');
                 li.innerHTML = `
-              <a onclick="getDetails('${news.category_id}')">${news.category_name}</a> `
+            
+              <a class="text-dark" onclick="getDetails('${news.category_name}, ${news.category_id}')">${news.category_name}</a> `
                 allMenu.appendChild(li);
             }
           
@@ -44,52 +51,95 @@ const newsLoad = async() =>{
 
 //  show all news 
 
-const getDetails = async(id) => {
+const getDetails = async(news) => {
+
+
+    var current = document.getElementsByClassName("text-dark");
+    current[0].className = current[0].className.replace(" active", "");
+    this.className += " active";
+
+
+
+    toggleSpinner(true);
+    // console.log(news)
+ const id = news.split(",")[1].split(" ")[1]
+ const name = news.split(",")[0]
+    // console.log(id)
     const displayNews =  document.getElementById('news_card');
     const data = await newsDetails(id);
     displayNews.innerHTML = '';
- 
- 
- 
- 
-    data.data.forEach(news => {
-     console.log(news)
-     const newsDiv = document.createElement('div');
-     newsDiv.classList.add('row');
-     newsDiv.innerHTML =  `
-         <div  class="col-md-4">
-         <img src="${news.image_url}" class="img-fluid rounded-start" alt="...">
-     </div>
-     <div class="col-md-8">
-         <div class="card-body">
-         <h5 class="card-title">${news.title}</h5>
-         <p class="card-text">${news.details.slice(0, 250)}...</p>
-         <div class="card-text">
-        <div>
-        <img src="${news.author.img}" class="img-fluid rounded-start author_img " alt="..." >
-        <small class="text-muted">${news.author.name}</small>
-        </div>
-         <p class="views">${news.total_view}</p>
-         <button class="btn btn-primary" onclick="loadDtials('${news._id}')" data-bs-toggle="modal" data-bs-target="#exampleModal">View More</button>
-         </div>
-         
-         </div>
-     </div>
-     `;
-     displayNews.appendChild(newsDiv);
- });
- 
+    toggleSpinner(false);
+//  console.log(data.data);
+    const itemNews = document.getElementById('count_news');
+    itemNews.innerHTML = `
 
+    ${data.data.length} items found of category ${name}
+
+   `
+ console.log( news.split(","))
+
+
+
+    if (data.data.length === 0){
+       displayNews.innerHTML = `
+        <p class="found">No Data Found</p>
+       `
+    }
+    else{
+
+        data.data.forEach(news => {
+            console.log(news)
+            const newsDiv = document.createElement('div');
+            newsDiv.classList.add('row');
+            newsDiv.innerHTML =  `
+                <div  class="col-md-4">
+                <img src="${news.image_url}" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                <h5 class="card-title">${news.title}</h5>
+                <p class="card-text">${news.details.slice(0, 250)}...</p>
+                <div class="card-text">
+               <div>
+               <img src="${news.author.img}" class="img-fluid rounded-start author_img " alt="..." >
+               <small class="text-muted">${news.author.name}</small>
+               </div>
+                <p class="views">${news.total_view}</p>
+                <button class="btn btn-primary" onclick="loadDtials('${news._id}')" data-bs-toggle="modal" data-bs-target="#exampleModal">View More</button>
+                </div>
+                
+                </div>
+            </div>
+            `;
+            displayNews.appendChild(newsDiv);
+        });
+        
+
+    }
+
+
+
+
+
+
+
+
+ 
+ toggleSpinner(false);
  }
 
 
 
  const loadDtials = id => {
+     
+ toggleSpinner(true);
     const url = `https://openapi.programming-hero.com/api/news/${id}`;
 console.log(id, url)
     fetch(url)
     .then(res => res.json())
     .then(data => displayNewsDetalis(data));
+     
+ toggleSpinner(false);
     // .then(data => console.log((data));
 }
 
@@ -116,6 +166,35 @@ const displayNewsDetalis = news => {
 
     // modalTitel.appendChild(newsDetailsDiv);
 }
+
+
+
+// Spinner
+
+
+const toggleSpinner = isLoading => {
+    const lodeerSpinner = document.getElementById('loader');
+    if(isLoading){
+        lodeerSpinner.classList.remove('d-none');
+    }
+    else{
+        lodeerSpinner.classList.add('d-none');
+    }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     loadDtials();
 -        setAllNews ();
 
