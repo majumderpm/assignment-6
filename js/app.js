@@ -41,7 +41,7 @@ const newsLoad = async() =>{
                 // li.classList.add('itemsList');
                 li.innerHTML = `
             
-              <a class="text-dark" onclick="getDetails('${news.category_name}, ${news.category_id}')">${news.category_name}</a> `
+              <a class="all_list_btn " onclick="getDetails('${news.category_name}, ${news.category_id}')">${news.category_name}</a> `
                 allMenu.appendChild(li);
             }
           
@@ -53,10 +53,10 @@ const newsLoad = async() =>{
 
 const getDetails = async(news) => {
 
-
-   const list = allMenu.querySelectorAll("a")
-   list.forEach(nav =>nav.classList.remove("active")
-    this.classList.add("active"))
+    // const allMenu = document.getElementById('all_menu');
+   const list = document.getElementsByClassName("all_list_btn")
+   list.forEach(nav =>nav.classList.remove("active"))
+    this.classList.add("active")
 
     const displayNewsDefult =  document.getElementById('defultnews_card');
     //    const data = newsDetails(id);
