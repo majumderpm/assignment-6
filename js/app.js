@@ -54,11 +54,13 @@ const newsLoad = async() =>{
 const getDetails = async(news) => {
 
 
-    // var current = document.getElementsByClassName("text-dark");
-    // current[id].className = current[id].className.replace(" active", "");
-    // this.className += " active";
+   const list = allMenu.querySelectorAll("a")
+   list.forEach(nav =>nav.classList.remove("active")
+    this.classList.add("active"))
 
-
+    const displayNewsDefult =  document.getElementById('defultnews_card');
+    //    const data = newsDetails(id);
+       displayNewsDefult.innerHTML = '';
 
     toggleSpinner(true);
     // console.log(news)
@@ -93,7 +95,7 @@ const getDetails = async(news) => {
             newsDiv.classList.add('row');
             newsDiv.innerHTML =  `
                 <div  class="col-md-4">
-                <img src="${news.image_url}" class="img-fluid rounded-start" alt="...">
+                <img src="${news.image_url}" class="img-fluid rounded-start news_img" alt="...">
             </div>
             <div class="col-md-8">
                 <div class="card-body">
@@ -104,7 +106,7 @@ const getDetails = async(news) => {
                <img src="${news.author.img}" class="img-fluid rounded-start author_img " alt="..." >
                <small class="text-muted">${news.author.name}</small>
                </div>
-                <p class="views">${news.total_view}</p>
+                <p class="views"><i class="fa-solid fa-eye"></i> ${news.total_view}</p>
                 <button class="btn btn-primary" onclick="loadDtials('${news._id}')" data-bs-toggle="modal" data-bs-target="#exampleModal">View More</button>
                 </div>
                 
@@ -189,7 +191,7 @@ const toggleSpinner = isLoading => {
     const loadDtialsTwo = async() => {
      
         toggleSpinner(true);
-           const url = `https://openapi.programming-hero.com/api/news/0282e0e58a5c404fbd15261f11c2ab6a`;
+           const url = `https://openapi.programming-hero.com/api/news/category/01`;
     //    console.log(id, url)
            fetch(url)
            .then(res => res.json())
@@ -204,9 +206,9 @@ const toggleSpinner = isLoading => {
 
 
 
-           const displayNews =  document.getElementById('defultnews_card');
+           const displayNewsDefult =  document.getElementById('defultnews_card');
         //    const data = newsDetails(id);
-           displayNews.innerHTML = '';
+           displayNewsDefult.innerHTML = '';
            toggleSpinner(false);
        //  console.log(data.data);
            const itemNews = document.getElementById('count_news');
@@ -215,12 +217,12 @@ const toggleSpinner = isLoading => {
            ${data.data.length} items found of category ${name}
        
           `
-        console.log( news.split(","))
+        console.log( data.data)
        
        
        
            if (data.data.length === 0){
-              displayNews.innerHTML = `
+              displayNewsDefult.innerHTML = `
                <p class="found">No Data Found</p>
               `
            }
@@ -232,7 +234,7 @@ const toggleSpinner = isLoading => {
                    newsDiv.classList.add('row');
                    newsDiv.innerHTML =  `
                        <div  class="col-md-4">
-                       <img src="${news.image_url}" class="img-fluid rounded-start" alt="...">
+                       <img src="${news.image_url}" class="img-fluid rounded-start news_img" alt="...">
                    </div>
                    <div class="col-md-8">
                        <div class="card-body">
@@ -243,14 +245,14 @@ const toggleSpinner = isLoading => {
                       <img src="${news.author.img}" class="img-fluid rounded-start author_img " alt="..." >
                       <small class="text-muted">${news.author.name}</small>
                       </div>
-                       <p class="views">${news.total_view}</p>
+                       <p class="views"><i class="fa-solid fa-eye"></i> ${news.total_view}</p>
                        <button class="btn btn-primary" onclick="loadDtials('${news._id}')" data-bs-toggle="modal" data-bs-target="#exampleModal">View More</button>
                        </div>
                        
                        </div>
                    </div>
                    `;
-                   displayNews.appendChild(newsDiv);
+                   displayNewsDefult.appendChild(newsDiv);
                });
                
        
