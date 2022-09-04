@@ -54,9 +54,9 @@ const newsLoad = async() =>{
 const getDetails = async(news) => {
 
 
-    var current = document.getElementsByClassName("text-dark");
-    current[0].className = current[0].className.replace(" active", "");
-    this.className += " active";
+    // var current = document.getElementsByClassName("text-dark");
+    // current[id].className = current[id].className.replace(" active", "");
+    // this.className += " active";
 
 
 
@@ -186,14 +186,86 @@ const toggleSpinner = isLoading => {
 
 
 
+    const loadDtialsTwo = async() => {
+     
+        toggleSpinner(true);
+           const url = `https://openapi.programming-hero.com/api/news/0282e0e58a5c404fbd15261f11c2ab6a`;
+    //    console.log(id, url)
+           fetch(url)
+           .then(res => res.json())
+           .then(data =>{
+
+          
+            
+            toggleSpinner(false);
+        console.log(url)
+           // .then(data => console.log((data));
 
 
 
 
+           const displayNews =  document.getElementById('defultnews_card');
+        //    const data = newsDetails(id);
+           displayNews.innerHTML = '';
+           toggleSpinner(false);
+       //  console.log(data.data);
+           const itemNews = document.getElementById('count_news');
+           itemNews.innerHTML = `
+       
+           ${data.data.length} items found of category ${name}
+       
+          `
+        console.log( news.split(","))
+       
+       
+       
+           if (data.data.length === 0){
+              displayNews.innerHTML = `
+               <p class="found">No Data Found</p>
+              `
+           }
+           else{
+       
+               data.data.forEach(news => {
+                   console.log(news)
+                   const newsDiv = document.createElement('div');
+                   newsDiv.classList.add('row');
+                   newsDiv.innerHTML =  `
+                       <div  class="col-md-4">
+                       <img src="${news.image_url}" class="img-fluid rounded-start" alt="...">
+                   </div>
+                   <div class="col-md-8">
+                       <div class="card-body">
+                       <h5 class="card-title">${news.title}</h5>
+                       <p class="card-text">${news.details.slice(0, 250)}...</p>
+                       <div class="card-text">
+                      <div>
+                      <img src="${news.author.img}" class="img-fluid rounded-start author_img " alt="..." >
+                      <small class="text-muted">${news.author.name}</small>
+                      </div>
+                       <p class="views">${news.total_view}</p>
+                       <button class="btn btn-primary" onclick="loadDtials('${news._id}')" data-bs-toggle="modal" data-bs-target="#exampleModal">View More</button>
+                       </div>
+                       
+                       </div>
+                   </div>
+                   `;
+                   displayNews.appendChild(newsDiv);
+               });
+               
+       
+
+            }
+
+            
+         } )}
+       
 
 
 
+       
 
+       loadDtialsTwo();
 
     loadDtials();
 -        setAllNews ();
