@@ -53,10 +53,10 @@ const newsLoad = async() =>{
 
 const getDetails = async(news) => {
 
-    // const allMenu = document.getElementById('all_menu');
-   const list = document.getElementsByClassName("all_list_btn")
-   list.forEach(nav =>nav.classList.remove("active"))
-    this.classList.add("active")
+//     const allMenu = document.getElementById('all_menu');
+// //    const list = document.getElementsByClassName("all_list_btn")
+//    allMenu.forEach(nav =>nav.classList.remove("active"))
+//     this.classList.add("active")
 
     const displayNewsDefult =  document.getElementById('defultnews_card');
     //    const data = newsDetails(id);
